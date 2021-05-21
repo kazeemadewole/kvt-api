@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = __importDefault(require("express"));
+var productController_1 = require("../controllers/productController");
+var userController_1 = require("../controllers/userController");
+var auth_1 = require("../middlewares/auth");
+var multer_config_1 = __importDefault(require("../middlewares/multer-config"));
+var router = express_1.default.Router();
+router.get('/me', auth_1.auth, auth_1.userAuth, userController_1.userProfile);
+router.put('/me', auth_1.auth, auth_1.userAuth, multer_config_1.default, userController_1.updateProfile);
+router.post('/me/logout', auth_1.auth, auth_1.userAuth, userController_1.logout);
+router.get('/me/product', auth_1.auth, auth_1.userAuth, productController_1.getAllProductByUser);
+router.get('/me/product/favorite', auth_1.auth, auth_1.userAuth, productController_1.getFavoriteProductByUser);
+router.put('/me/product/favorite/:id', auth_1.auth, auth_1.userAuth, productController_1.updateFavoriteProduct);
+router.put('/me/product/:id', auth_1.auth, auth_1.userAuth, productController_1.updateProduct);
+router.post('/me/product', auth_1.auth, auth_1.userAuth, multer_config_1.default, productController_1.createProduct);
+router.delete('/me/product/:id', auth_1.auth, auth_1.userAuth, multer_config_1.default, productController_1.deleteProduct);
+exports.default = router;
